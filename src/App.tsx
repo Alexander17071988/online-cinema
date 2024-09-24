@@ -1,12 +1,12 @@
 import React from 'react';
 import MovieList from './components/MovieList';
 import MovieCarousel from './components/MovieCarousel';
-import { Container, Typography } from '@mui/material'
+import { Container, Typography } from '@mui/material';
+import { Group } from './types/types';
 
-type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'subtitle1' | 'subtitle2' | 'body1' | 'body2' | 'caption' | 'button' | 'overline';
-type TypographyAlign = 'inherit' | 'left' | 'center' | 'right' | 'justify';
 
-const groups: { fs: TypographyVariant; title: string; align?: TypographyAlign }[] = [
+
+const groups: Group[] = [
     {
         fs: 'h3',
         title: 'Movie Theater',
