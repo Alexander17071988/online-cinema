@@ -1,12 +1,17 @@
-import shutterIsland from '../images/shutterIsland.jpg'
+import oneMovie from '../images/1.jpg';
+import twoMovie from '../images/2.jpg';
+import threeMovie from '../images/3.jpg';
+import fourMovie from '../images/4.jpg';
+import fiveMovie from '../images/5.jpg';
+import sixMovie from '../images/6.jpg';
 
 const movieImages: { [key: string]: string } = {
-    'shutterIsland': shutterIsland,
-    'The Empire Strikes Back': 'https://path_to_image2.jpg',
-    'Return of the Jedi': 'https://path_to_image3.jpg',
-    'The Phantom Menace': 'https://path_to_image4.jpg',
-    'Attack of the Clones': 'https://path_to_image5.jpg',
-    'Revenge of the Sith': 'https://path_to_image6.jpg',
+    'A New Hope': oneMovie,
+    'The Empire Strikes Back': twoMovie,
+    'Return of the Jedi': threeMovie,
+    'The Phantom Menace': fourMovie,
+    'Attack of the Clones': fiveMovie,
+    'Revenge of the Sith': sixMovie,
 };
 
 export default movieImages;

@@ -4,6 +4,32 @@ import movieImages from "../data/moviesImages";
 import Slider from 'react-slick';
 import { Card, CardMedia, CardContent, Typography } from "@mui/material";
 
+const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    responsive: [
+        {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                infinite: true,
+                dots: true
+            }
+        },
+        {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+        }
+    ]
+};
+
 interface Movie {
     title: string;
     episode_id: number;
@@ -22,34 +48,15 @@ const MovieCarousel: React.FC = () => {
         fetchMovies();
     }, []);
 
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
-
     return (
-        <Slider {...settings}>
+        <Slider
+            dots={settings.dots}
+            infinite={settings.infinite}
+            speed={settings.speed}
+            slidesToShow={settings.slidesToShow}
+            slidesToScroll={settings.slidesToScroll}
+            responsive={settings.responsive}
+        >
             {movies.map((movie) => (
                 <Card key={movie.episode_id} style={{ margin: '0 10px' }}>
                     <CardMedia
