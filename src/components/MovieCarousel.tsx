@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { getMovies } from "../swapi";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchMovies, filterByDirector } from "../components/moviesSlice";
+import { RootState, AppDispatch } from "../store/store";
 import movieImages from "../data/moviesImages";
 import Slider from 'react-slick';
-import { Card, CardMedia, CardContent, Typography, IconButton } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, IconButton, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const carouselStyles: React.CSSProperties = {
@@ -29,52 +31,70 @@ const CustomNextArrow = ({ onclick }: { onclick?: () => void }) => {
     );
 };
 
-const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    nextArrow: <CustomNextArrow />,
-    responsive: [
-        {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-                infinite: true,
-            }
-        },
-        {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-        }
-    ]
-};
-
-interface Movie {
-    title: string;
-    episode_id: number;
-    release_date: string;
-}
-
 const MovieCarousel: React.FC = () => {
-    const [movies, setMovies] = useState<Movie[]>([]);
+    const dispatch = useDispatch<AppDispatch>();
+    const { filteredMovies, movies, status } = useSelector((state: RootState) => state.movies);
 
     useEffect(() => {
-        const fetchMovies = async () => {
-            const moviesData = await getMovies();
-            setMovies(moviesData);
-        };
+        if (status === 'idle') {
+            dispatch(fetchMovies());
+        }
+    }, [status, dispatch]);
 
-        fetchMovies();
-    }, []);
+    const handleDirectorFilter = (event: SelectChangeEvent) => {
+        const selectedDirector = event.target.value;
+        dispatch(filterByDirector(selectedDirector));
+    };
+
+    const slidesToShow = Math.min(4, filteredMovies.length || 1);
+
+    const infiniteScroll = filteredMovies.length > 1;
+
+    const settings = {
+        dots: false,
+        infinite: infiniteScroll,
+        speed: 500,
+        slidesToShow: slidesToShow,
+        slidesToScroll: slidesToShow,
+        nextArrow: <CustomNextArrow />,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: Math.min(2, filteredMovies.length),
+                    slidesToScroll: 1,
+                    infinite: true,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    infinite: true,
+                }
+            }
+        ]
+    };
 
     return (
         <div style={carouselStyles}>
+            { }
+            <Select
+                defaultValue=""
+                onChange={handleDirectorFilter}
+                displayEmpty
+                style={{ color: 'white', marginBottom: '20px' }}
+            >
+                <MenuItem value="">All Directors</MenuItem>
+                {Array.from(new Set(movies.map(movie => movie.director))).map(director => (
+                    <MenuItem key={director} value={director}>
+                        {director}
+                    </MenuItem>
+                ))}
+            </Select>
+
+            { }
             <Slider
                 dots={settings.dots}
                 infinite={settings.infinite}
@@ -83,7 +103,7 @@ const MovieCarousel: React.FC = () => {
                 slidesToScroll={settings.slidesToScroll}
                 responsive={settings.responsive}
             >
-                {movies.map((movie) => (
+                {filteredMovies.map((movie) => (
                     <Card key={movie.episode_id} style={{ margin: '0 5px' }}>
                         <CardMedia
                             component="img"
@@ -94,13 +114,13 @@ const MovieCarousel: React.FC = () => {
                         <CardContent>
                             <Typography variant="h6">{movie.title}</Typography>
                             <Typography variant="body2" color="textSecondary">
-                                Release Date: {movie.release_date}
+                                Director: {movie.director}
                             </Typography>
                         </CardContent>
                     </Card>
                 ))}
-            </Slider >
-        </div >
+            </Slider>
+        </div>
     );
 };
 
