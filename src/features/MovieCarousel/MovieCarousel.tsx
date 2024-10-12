@@ -1,35 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchMovies, filterByDirector } from "../components/moviesSlice";
-import { RootState, AppDispatch } from "../store/store";
-import movieImages from "../data/moviesImages";
+import { fetchMovies, filterByDirector } from "./moviesSlice";
+import { RootState, AppDispatch } from "@app/store/store";
+import movieImages from "@entities/moviesImages";
 import Slider from 'react-slick';
-import { Card, CardMedia, CardContent, Typography, IconButton, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-
-const carouselStyles: React.CSSProperties = {
-    backgroundColor: "#000",
-    padding: "20px",
-    position: "relative",
-};
-
-const CustomNextArrow = ({ onclick }: { onclick?: () => void }) => {
-    return (
-        <IconButton
-            onClick={onclick}
-            style={{
-                position: "absolute",
-                right: -40,
-                top: "50%",
-                transform: "translateY(-50%)",
-                zIndex: 1,
-                color: "white"
-            }}
-        >
-            <ArrowForwardIosIcon />
-        </IconButton>
-    );
-};
+import { Card, CardMedia, CardContent, Typography, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { CustomNextArrow } from "@widgets/CustomNextArrow";
+import { carouselStyles } from "@widgets/carouselStyles";
 
 const MovieCarousel: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();

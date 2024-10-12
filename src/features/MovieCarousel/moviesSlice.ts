@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getMovies } from '../swapi';
+import { getMovies } from './swapi';
 
 interface Movie {
     title: string;
